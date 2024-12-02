@@ -19,7 +19,7 @@ $jml_surat_masuk = mysqli_num_rows($result_surat_masuk);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Pengarsipan Surat</title>
+    <title>Surat Masuk</title>
 
     <!-- External Libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -123,29 +123,7 @@ $jml_surat_masuk = mysqli_num_rows($result_surat_masuk);
                     <ul class="navbar-nav ml-auto">
 
                 <!-- Nav Item - Alerts -->                         
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
+                <?php include "header.php" ?>
                 <!-- End of Topbar -->              
                  
                 <!-- Begin Page Content -->
@@ -215,22 +193,29 @@ $jml_surat_masuk = mysqli_num_rows($result_surat_masuk);
                                         $nama_instansi = $asal_surat_row ? $asal_surat_row['nama_instansi'] : 'Tidak Ditemukan';
                                 ?>
                                 <tr>
-                                <td><?php echo $no++; ?></td> <!-- Menampilkan nomor urut otomatis -->
-                                <td><?php echo $row_surat_masuk["no_surat"]?></td>
-                                <td><?php echo $row_surat_masuk["tanggal_masuk"]?></td>
-                                <td><?php echo $row_surat_masuk["perihal"]?></td>
-                                <td><?php echo $nama_divisi?></td> <!-- Menampilkan nama divisi -->
-                                <td><?php echo $kode_surat?></td> <!-- Menampilkan kode surat -->
-                                <td><?php echo $nama_instansi?></td> <!-- Menampilkan nama instansi -->
-                                <td><?php echo $row_surat_masuk["file_surat"] ? 'Ada' : 'Tidak Ada' ?></td> <!-- Menampilkan 'Ada' jika file_surat ada -->
-                                <td><?php echo $row_surat_masuk["catatan"]?></td>
+                                    <td><?php echo $no++; ?></td> <!-- Menampilkan nomor urut otomatis -->
+                                    <td><?php echo $row_surat_masuk["no_surat"]?></td>
+                                    <td><?php echo $row_surat_masuk["tanggal_masuk"]?></td>
+                                    <td><?php echo $row_surat_masuk["perihal"]?></td>
+                                    <td><?php echo $nama_divisi?></td> <!-- Menampilkan nama divisi -->
+                                    <td><?php echo $kode_surat?></td> <!-- Menampilkan kode surat -->
+                                    <td><?php echo $nama_instansi?></td> <!-- Menampilkan nama instansi -->
                                     <td>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="surat-masuk-edit.php?id=<?php echo $row_surat_masuk["id_surat"]?>" class="btn btn-sm btn-success"><i class="bx bx-pencil"></i> Edit</a>
-                                            <a href="surat-masuk-hapus.php?id=<?php echo $row_surat_masuk["id_surat"]?>" class="btn btn-sm btn-danger" onClick="return confirm('Apakah anda yakin ingin menghapus data ini...?')"><i class="bx bx-trash"></i> Hapus</a>
-                                        </div>
+                                        <?php if ($row_surat_masuk["file_surat"]) : ?>
+                                            <a href="<?php echo $row_surat_masuk['file_surat']; ?>" class="btn btn-sm btn-info" target="_blank">
+                                                <i class="bx bx-download"></i>Download</a>
+                                        <?php else : ?>
+                                            Tidak Ada
+                                        <?php endif; ?>
                                     </td>
-                                </tr>
+                                    <td><?php echo $row_surat_masuk["catatan"]?></td>
+                                    <td>
+                                      <div class="btn-group" role="group" aria-label="Basic example">
+                                           <a href="surat_masuk_edit.php?id=<?php echo $row_surat_masuk["id_surat"]?>" class="btn btn-sm btn-success"><i class="bx bx-pencil"></i> Edit</a>
+                                           <a href="surat_masuk_hapus.php?id=<?php echo $row_surat_masuk["id_surat"]?>" class="btn btn-sm btn-danger" onClick="return confirm('Apakah anda yakin ingin menghapus data ini...?')"><i class="bx bx-trash"></i> Hapus</a>
+                                         </div>
+                                      </td>
+                                    </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -243,24 +228,7 @@ $jml_surat_masuk = mysqli_num_rows($result_surat_masuk);
         <!-- End of Page Wrapper -->
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Keluar?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Pilih "Logout" bila ingin keluar dari akun ini.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="../login.php">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
@@ -278,7 +246,50 @@ $jml_surat_masuk = mysqli_num_rows($result_surat_masuk);
     <!-- Page level custom scripts -->
     <script src="../js/demo/chart-area-demo.js"></script>
     <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="../js/app.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- Buttons Extension CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- Buttons Extension JS -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <!-- FixedHeader CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.3.3/css/fixedHeader.dataTables.min.css">
+
+    <!-- FixedHeader JS -->
+    <script src="https://cdn.datatables.net/fixedheader/3.3.3/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+$(document).ready(function() {
+    var table = $('#example2').DataTable({
+        dom: 'Bfrtip',  
+        buttons: ['copy', 'excel', 'pdf', 'print'],
+        fixedHeader: true, // Enable FixedHeader
+        scrollX: false, // Disable horizontal scrolling (if not necessary)
+        lengthChange: false,
+        pageLength: 30,
+        order: [0, 'asc'],
+        autoWidth: true, // Ensures columns automatically adjust width
+        columnDefs: [{
+            targets: '_all',
+            className: 'dt-center' // Center content in all columns (optional)
+        }]
+    });
+
+    table.buttons().container()
+        .appendTo('#example2_wrapper .col-md-6:eq(0)');
+});
+
+    </script>
     </body>
-
 </html>

@@ -11,15 +11,16 @@ if (isset($_POST["submit"])) {
     $jml_login = mysqli_num_rows($login);
 
     if ($jml_login == 1) {
-        $row_login = mysqli_fetch_assoc($login);
+        $row = mysqli_fetch_assoc($login);
         $_SESSION["id_user"] = $row["id_user"];
         $_SESSION["nm_user"] = $row["nm_user"];
-        $_SESSION["username"] = $row["username"]; 
+        $_SESSION["username"] = $row["username"];
+        $_SESSION["password"] = $row["password"];  
         $_SESSION["role"] = $row["role"];
 
-        if ($row_login["role"] == 'pegawai') {
+        if ($row["role"] == 'pegawai') {
             header("Location: admin/index.php");
-        } else if ($row_login["role"] == 'admin') {
+        } else if ($row["role"] == 'admin') {
             header("Location: admin/index.php");
         }
     }

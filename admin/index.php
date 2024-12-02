@@ -1,15 +1,31 @@
 <?php
 session_start();
 
-
 include "../koneksi.php";
+
+// Query the counts for each table
+$surat_masuk_query = "SELECT COUNT(*) AS count FROM surat_masuk";
+$divisi_query = "SELECT COUNT(*) AS count FROM divisi";
+$kode_surat_query = "SELECT COUNT(*) AS count FROM kode_surat";
+$user_query = "SELECT COUNT(*) AS count FROM user";
+
+// Execute the queries
+$surat_masuk_result = mysqli_query($conn, $surat_masuk_query);
+$divisi_result = mysqli_query($conn, $divisi_query);
+$kode_surat_result = mysqli_query($conn, $kode_surat_query);
+$user_result = mysqli_query($conn, $user_query);
+
+// Fetch the counts
+$surat_masuk_count = mysqli_fetch_assoc($surat_masuk_result)['count'];
+$divisi_count = mysqli_fetch_assoc($divisi_result)['count'];
+$kode_surat_count = mysqli_fetch_assoc($kode_surat_result)['count'];
+$user_count = mysqli_fetch_assoc($user_result)['count'];
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,13 +36,10 @@ include "../koneksi.php";
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -36,7 +49,6 @@ include "../koneksi.php";
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
@@ -44,8 +56,6 @@ include "../koneksi.php";
                 </div>
                 <div class="sidebar-brand-text mx-3">Pengarsipan Surat</div>
             </a>
-            
-            
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -118,55 +128,9 @@ include "../koneksi.php";
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Alerts -->
-
                         <!-- Nav Item - User Information -->
-                         
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
+                        <?php include "header.php" ?>
+
                     </ul>
                 </nav>
                 <!-- End of Topbar -->
@@ -178,12 +142,11 @@ include "../koneksi.php";
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
-                    
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Surat Masuk Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
@@ -191,7 +154,7 @@ include "../koneksi.php";
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Surat Masuk</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $surat_masuk_count ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-envelope fa-2x text-gray-300"></i>
@@ -201,7 +164,7 @@ include "../koneksi.php";
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Divisi Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
@@ -209,7 +172,7 @@ include "../koneksi.php";
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Divisi</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $divisi_count ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-sitemap fa-2x text-gray-300"></i>
@@ -219,7 +182,7 @@ include "../koneksi.php";
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Kode Surat Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
@@ -227,7 +190,7 @@ include "../koneksi.php";
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 Kode Surat</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $kode_surat_count ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard fa-2x text-gray-300"></i>
@@ -237,7 +200,7 @@ include "../koneksi.php";
                             </div>
                         </div>
 
-                        <!-- Pending Requests Card Example -->
+                        <!-- Pengguna Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
@@ -245,7 +208,7 @@ include "../koneksi.php";
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Pengguna</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $user_count ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -254,39 +217,21 @@ include "../koneksi.php";
                                 </div>
                             </div>
                         </div>
-                    </div>
-            </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <!-- End of Footer -->
+                    </div>
+                    <!-- End Content Row -->
+
+                </div>
+                <!-- End Page Content -->
+
+            </div>
+            <!-- End Main Content -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Keluar?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Pilih "Logout" bila ingin keluar dari akun ini.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="../login.php">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
@@ -297,13 +242,6 @@ include "../koneksi.php";
 
     <!-- Custom scripts for all pages-->
     <script src="../js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="../vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
 
 </body>
 
