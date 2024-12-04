@@ -4,12 +4,6 @@ include "../koneksi.php";
 
 //url base, ubah gasan laptop kena
 $base_url = "http://localhost/pengarsipan/";
-    
-// Check if user is logged in
-if(!isset($_SESSION["id_user"])) {
-    header("Location: ../login.php");
-    exit;
-}
 
 $id_user = $_SESSION['id_user'];
 $id_surat = $_GET['id'];
@@ -19,11 +13,13 @@ $query = "SELECT * FROM surat_masuk WHERE id_surat = '$id_surat'";
 $result = mysqli_query($conn, $query);
 
 if (!$result || mysqli_num_rows($result) === 0) {
-    echo "Data surat tidak ditemukan.";
+    // Redirect to surat_masuk page if data not found
+    header("Location: surat_masuk.php");
     exit();
 }
 
 $data_surat = mysqli_fetch_assoc($result);
+$file_error = "";  // Initialize an empty error message
 
 // Fetch data for dropdowns
 $divisi_query = mysqli_query($conn, "SELECT * FROM divisi");
@@ -41,41 +37,70 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $catatan = $_POST['catatan'];
     $file_surat = $_FILES['file_surat']['name'];
 
+    // Initialize file error message as empty
+    $file_error = "";
+
     // Update file if a new one is uploaded
     if ($file_surat) {
         $target_dir = "../files/";
-        $target_file = $target_dir . basename($file_surat);
 
-        if (move_uploaded_file($_FILES['file_surat']['tmp_name'], $target_file)) {
-            $file_surat = $base_url . "files/" . basename($file_surat);
-        } else {
-            echo "Gagal mengunggah file.";
-            $file_surat = $data_surat['file_surat']; // Use the old file
+        // Get file extension
+        $file_extension = strtolower(pathinfo($file_surat, PATHINFO_EXTENSION));
+
+        // Allowed file types
+        $allowed_extensions = ['pdf', 'png', 'jpg', 'jpeg'];
+
+        // Check file type
+        if (!in_array($file_extension, $allowed_extensions)) {
+            $file_error = "Hanya File PDF, PNG, JPG, JPEG yang diperbolehkan!";
         }
-    } else {
-        $file_surat = $data_surat['file_surat']; // Use the old file
+
+        // Check file size (max 5MB)
+        elseif ($_FILES['file_surat']['size'] > 5 * 1024 * 1024) { // 5MB in bytes
+            $file_error = 'Ukuran file melebihi 5MB.';
+        }
+
+        // If no errors, process the file upload
+        if (!$file_error) {
+            // Randomize the file name
+            $random_name = uniqid() . '.' . $file_extension;
+            $target_file = $target_dir . $random_name;
+
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES['file_surat']['tmp_name'], $target_file)) {
+                // Update $file_surat with the full URL
+                $file_surat = $base_url . "files/" . $random_name;
+            } else {
+                $file_surat = null; // Reset if upload failed
+            }
+        }
     }
 
-    // Update data
-    $update_query = "UPDATE surat_masuk 
-                     SET no_surat = '$no_surat', 
-                         tanggal_masuk = '$tanggal_masuk', 
-                         perihal = '$perihal', 
-                         id_divisi = '$id_divisi', 
-                         id_kode_surat = '$id_kode_surat', 
-                         id_asal_surat = '$id_asal_surat', 
-                         file_surat = '$file_surat', 
-                         catatan = '$catatan' 
-                     WHERE id_surat = '$id_surat'";
+    // Update data in the database
+    if (!$file_error) {
+        $update_query = "UPDATE surat_masuk 
+                         SET no_surat = '$no_surat', 
+                             tanggal_masuk = '$tanggal_masuk', 
+                             perihal = '$perihal', 
+                             id_divisi = '$id_divisi', 
+                             id_kode_surat = '$id_kode_surat', 
+                             id_asal_surat = '$id_asal_surat', 
+                             file_surat = '$file_surat', 
+                             catatan = '$catatan' 
+                         WHERE id_surat = '$id_surat'";
 
-    if (mysqli_query($conn, $update_query)) {
-        header("Location: surat_masuk.php");
-        exit();
-    } else {
-        echo "Error: " . mysqli_error($conn);
+        // Execute the query and redirect on success
+        if (mysqli_query($conn, $update_query)) {
+            header("Location: surat_masuk.php");
+            exit();
+        } else {
+            // Error in updating, silently fail (no visible error message)
+            // Could log the error to a file or silently handle the issue
+        }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -259,9 +284,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                                 <div class="form-group">
                                     <label for="file_surat">File Surat</label>
-                                    <input type="file" class="form-control-file" id="file_surat" name="file_surat">
-                                    <?php if ($data_surat['file_surat']) : ?>
-                                        <small>File lama: <a href="<?php echo $data_surat['file_surat']; ?>" target="_blank">Lihat File</a></small>
+                                    <input type="file" class="form-control-file" id="file_surat" name="file_surat" accept=".pdf,.png,.jpg,.jpeg">
+                                    <div class="form-text">Hanya File PDF, PNG, JPG, JPEG. Ukuran Maksimum: 5MB</div>
+                                    <?php if ($file_error): ?>
+                                        <small class="text-danger"><?= $file_error ?></small>
                                     <?php endif; ?>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
