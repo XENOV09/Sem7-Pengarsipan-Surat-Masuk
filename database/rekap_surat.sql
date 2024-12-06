@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2024 at 05:17 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Dec 06, 2024 at 01:43 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,15 +30,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `asal_surat` (
   `id_asal_surat` int(11) NOT NULL,
   `nama_instansi` varchar(200) NOT NULL,
-  `alamat_instansi` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `alamat_instansi` varchar(200) NOT NULL,
+  `no_telpon_instansi` varchar(30) NOT NULL,
+  `email_instansi` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `asal_surat`
 --
 
-INSERT INTO `asal_surat` (`id_asal_surat`, `nama_instansi`, `alamat_instansi`) VALUES
-(1, 'Dinas Pariwisata', 'Jln Benua Anyar');
+INSERT INTO `asal_surat` (`id_asal_surat`, `nama_instansi`, `alamat_instansi`, `no_telpon_instansi`, `email_instansi`) VALUES
+(1, 'Dinas Pariwisata', 'Jln Benua Anyar', '', ''),
+(2, 'Dinas Dinasan', 'Jln An', '', '');
 
 -- --------------------------------------------------------
 
@@ -49,14 +52,15 @@ INSERT INTO `asal_surat` (`id_asal_surat`, `nama_instansi`, `alamat_instansi`) V
 CREATE TABLE `divisi` (
   `id_divisi` int(11) NOT NULL,
   `nama_divisi` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `divisi`
 --
 
 INSERT INTO `divisi` (`id_divisi`, `nama_divisi`) VALUES
-(1, 'Pertanian');
+(1, 'Pertanian'),
+(2, 'Sekretariat');
 
 -- --------------------------------------------------------
 
@@ -68,14 +72,15 @@ CREATE TABLE `kode_surat` (
   `id_kode_surat` int(11) NOT NULL,
   `kode_surat` varchar(50) NOT NULL,
   `keterangan` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `kode_surat`
 --
 
 INSERT INTO `kode_surat` (`id_kode_surat`, `kode_surat`, `keterangan`) VALUES
-(1, 'IX', 'Undangan Kepala Dinas');
+(1, 'IX', 'Undangan Kepala Dinas'),
+(2, 'XI', 'Makanan');
 
 -- --------------------------------------------------------
 
@@ -87,21 +92,22 @@ CREATE TABLE `surat_masuk` (
   `id_surat` int(11) NOT NULL,
   `no_surat` varchar(50) NOT NULL,
   `tanggal_masuk` date NOT NULL,
-  `perihal` varchar(200) NOT NULL,
-  `file_surat` int(11) DEFAULT NULL,
+  `perihal` varchar(500) NOT NULL,
+  `file_surat` varchar(500) DEFAULT NULL,
   `id_user` int(11) NOT NULL,
   `id_divisi` int(11) NOT NULL,
   `id_kode_surat` int(11) NOT NULL,
   `id_asal_surat` int(11) NOT NULL,
   `catatan` varchar(300) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `surat_masuk`
 --
 
 INSERT INTO `surat_masuk` (`id_surat`, `no_surat`, `tanggal_masuk`, `perihal`, `file_surat`, `id_user`, `id_divisi`, `id_kode_surat`, `id_asal_surat`, `catatan`) VALUES
-(1, '291', '2024-10-09', 'A', NULL, 1, 1, 1, 1, 'AAAA');
+(26, '2', '0001-03-12', 'Testing 2', 'http://localhost/pengarsipan/files/675017a14e3b4.pdf', 1, 2, 1, 1, 'Test 2'),
+(27, '2', '2024-11-29', 'Test Pegawai', 'http://localhost/pengarsipan/files/6752f1175420e.pdf', 2, 1, 1, 1, 'Test Pegawai');
 
 -- --------------------------------------------------------
 
@@ -115,7 +121,7 @@ CREATE TABLE `user` (
   `username` varchar(70) NOT NULL,
   `password` varchar(50) NOT NULL,
   `role` enum('pegawai','admin') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
@@ -171,25 +177,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `asal_surat`
 --
 ALTER TABLE `asal_surat`
-  MODIFY `id_asal_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_asal_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `divisi`
 --
 ALTER TABLE `divisi`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `kode_surat`
 --
 ALTER TABLE `kode_surat`
-  MODIFY `id_kode_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_kode_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `surat_masuk`
 --
 ALTER TABLE `surat_masuk`
-  MODIFY `id_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user`

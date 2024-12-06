@@ -44,7 +44,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pengarsipan</h6>
                 <a class="collapse-item <?php echo ($current_page == 'surat_masuk.php') ? 'active' : ''; ?>" href="surat_masuk.php">Surat Masuk</a>
-                <a class="collapse-item <?php echo ($current_page == 'log_surat.php') ? 'active' : ''; ?>" href="log_surat.php">Log Surat</a>
             </div>  
         </div>
     </li>
@@ -63,6 +62,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <h6 class="collapse-header">Menu</h6>
                 <a class="collapse-item <?php echo ($current_page == 'user.php') ? 'active' : ''; ?>" href="user.php">Pengguna Terdaftar</a>
                 <a class="collapse-item <?php echo ($current_page == 'divisi.php') ? 'active' : ''; ?>" href="divisi.php">Divisi</a>
+                <a class="collapse-item <?php echo ($current_page == 'divisi.php') ? 'active' : ''; ?>" href="divisi.php">Kode Surat</a>
+                <a class="collapse-item <?php echo ($current_page == 'divisi.php') ? 'active' : ''; ?>" href="divisi.php">Asal Surat</a>
             </div>
         </div>
     </li>

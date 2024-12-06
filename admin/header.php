@@ -1,9 +1,10 @@
 <?php
 include "../koneksi.php";
 
+
 // Check if the user is logged in
 if (!isset($_SESSION['id_user'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 }
 
@@ -23,16 +24,16 @@ $stmt->close();
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo htmlspecialchars($nm_user); ?>
                                     </span>
                                     <img class="img-profile rounded-circle"
-                                        src="../img/undraw_profile.svg">
+                                        src="../img/profil.jpg">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                aria-labelledby="userDropdown">
-                               <a class="dropdown-item" href="profile.php">
+                               <!-- <a class="dropdown-item" href="profile.php">
                                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                   Profile
                                </a>
-                               <div class="dropdown-divider"></div>
+                               <div class="dropdown-divider"></div> -->
                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                   Logout
@@ -57,7 +58,7 @@ $stmt->close();
                     <div class="modal-body">Pilih "Logout" bila ingin keluar dari akun ini.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="../login.php">Logout</a>
+                        <a class="btn btn-primary" href="logout.php">Logout</a>
                     </div>
                 </div>
             </div>

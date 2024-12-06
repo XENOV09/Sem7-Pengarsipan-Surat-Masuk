@@ -1,16 +1,18 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
 include "../koneksi.php";
 
 $result_surat_masuk = mysqli_query($conn, "SELECT * FROM surat_masuk");
 $jml_surat_masuk = mysqli_num_rows($result_surat_masuk);
 
 // Check if the user is logged in and get the id_user from the session
-if (!isset($_SESSION["id_user"])) {
-    header("Location: ../login.php");
-    exit;
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +110,7 @@ if (!isset($_SESSION["id_user"])) {
                                         <th>No Surat</th>
                                         <th>Tanggal Masuk</th>
                                         <th>Perihal</th>
+                                        <th>Penginput</th>
                                         <th>Divisi</th>
                                         <th>Kode Surat</th>
                                         <th>Asal Surat</th>
@@ -134,12 +137,18 @@ if (!isset($_SESSION["id_user"])) {
                                         $asal_surat_query = mysqli_query($conn, "SELECT nama_instansi FROM asal_surat WHERE id_asal_surat = '".$row_surat_masuk['id_asal_surat']."'");
                                         $asal_surat_row = mysqli_fetch_assoc($asal_surat_query);
                                         $nama_instansi = $asal_surat_row ? $asal_surat_row['nama_instansi'] : 'Tidak Ditemukan';
+
+                                        //Ambil nm_user dari tabel user
+                                        $nm_user_query = mysqli_query($conn, "SELECT nm_user FROM user WHERE id_user = '".$row_surat_masuk['id_user']."'");
+                                        $id_user_row = mysqli_fetch_assoc($nm_user_query);
+                                        $nm_user = $id_user_row ? $id_user_row['nm_user'] : 'Tidak Ditemukan';                                        
                                 ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td> <!-- Menampilkan nomor urut otomatis -->
                                     <td><?php echo $row_surat_masuk["no_surat"]?></td>
                                     <td><?php echo $row_surat_masuk["tanggal_masuk"]?></td>
                                     <td><?php echo $row_surat_masuk["perihal"]?></td>
+                                    <td><?php echo $nm_user?></td>
                                     <td><?php echo $nama_divisi?></td> <!-- Menampilkan nama divisi -->
                                     <td><?php echo $kode_surat?></td> <!-- Menampilkan kode surat -->
                                     <td><?php echo $nama_instansi?></td> <!-- Menampilkan nama instansi -->

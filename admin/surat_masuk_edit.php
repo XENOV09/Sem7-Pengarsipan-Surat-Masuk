@@ -2,6 +2,11 @@
 session_start();
 include "../koneksi.php";
 
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
 //url base, ubah gasan laptop kena
 $base_url = "http://localhost/pengarsipan/";
 
@@ -74,6 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $file_surat = null; // Reset if upload failed
             }
         }
+    } else {
+        // If no file is uploaded, keep the existing file
+        $file_surat = $data_surat['file_surat'];  // Retain the current file URL
     }
 
     // Update data in the database
@@ -286,10 +294,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <label for="file_surat">File Surat</label>
                                     <input type="file" class="form-control-file" id="file_surat" name="file_surat" accept=".pdf,.png,.jpg,.jpeg">
                                     <div class="form-text">Hanya File PDF, PNG, JPG, JPEG. Ukuran Maksimum: 5MB</div>
+                                    <?php if ($data_surat['file_surat']): ?>
+                                        <p>File saat ini: <a href="<?php echo $data_surat['file_surat']; ?>" target="_blank">Lihat File</a></p>
+                                    <?php endif; ?>
                                     <?php if ($file_error): ?>
                                         <small class="text-danger"><?= $file_error ?></small>
                                     <?php endif; ?>
                                 </div>
+
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </form>
                         </div>

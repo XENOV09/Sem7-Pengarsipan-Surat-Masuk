@@ -2,6 +2,10 @@
 session_start();
 include "../koneksi.php";
 
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../login.php");
+    exit();
+}
 //url base, ubah gasan laptop kena
 $base_url = "http://localhost/pengarsipan/";
 
