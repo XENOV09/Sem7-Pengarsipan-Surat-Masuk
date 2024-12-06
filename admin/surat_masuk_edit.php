@@ -270,7 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <option value="">Pilih Kode Surat</option>
                                         <?php while ($row = mysqli_fetch_assoc($kode_surat_query)) : ?>
                                             <option value="<?php echo $row['id_kode_surat']; ?>" <?php echo ($data_surat['id_kode_surat'] == $row['id_kode_surat']) ? 'selected' : ''; ?>>
-                                                <?php echo $row['kode_surat']; ?>
+                                                <?php echo $row['kode_surat'] . ' - ' . $row['keterangan']; ?>
                                             </option>
                                         <?php endwhile; ?>
                                     </select>

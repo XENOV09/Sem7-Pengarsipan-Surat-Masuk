@@ -14,11 +14,6 @@ $divisi_query = mysqli_query($conn, "SELECT * FROM divisi");
 $kode_surat_query = mysqli_query($conn, "SELECT * FROM kode_surat");
 $asal_surat_query = mysqli_query($conn, "SELECT * FROM asal_surat");
 
-// Check if the user is logged in and get the id_user from the session
-if(!isset($_SESSION["id_user"])) {
-    header("Location: ../login.php");
-    exit;
-}
 $id_user = $_SESSION['id_user']; // Get id_user from session
 
 $file_error = "";  // Initialize an empty error message
@@ -181,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="form-group">
                             <label for="id_divisi">Divisi</label>
                             <select class="form-control" id="id_divisi" name="id_divisi" required>
-                                <option value="">Pilih Divisi</option>
+                                <option value="" disabled selected>Pilih Divisi</option>
                                 <?php while ($row = mysqli_fetch_assoc($divisi_query)): ?>
                                     <option value="<?= $row['id_divisi'] ?>" <?= ($id_divisi == $row['id_divisi']) ? 'selected' : '' ?>><?= $row['nama_divisi'] ?></option>
                                 <?php endwhile; ?>
@@ -191,17 +186,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="form-group">
                             <label for="id_kode_surat">Kode Surat</label>
                             <select class="form-control" id="id_kode_surat" name="id_kode_surat" required>
-                                <option value="">Pilih Kode Surat</option>
+                                <option value="" disabled selected>Pilih Kode Surat</option>
                                 <?php while ($row = mysqli_fetch_assoc($kode_surat_query)): ?>
-                                    <option value="<?= $row['id_kode_surat'] ?>" <?= ($id_kode_surat == $row['id_kode_surat']) ? 'selected' : '' ?>><?= $row['kode_surat'] ?></option>
+                                    <!-- Display both kode_surat and keterangan -->
+                                    <option value="<?= $row['id_kode_surat'] ?>" <?= ($id_kode_surat == $row['id_kode_surat']) ? 'selected' : '' ?>>
+                                        <?= $row['kode_surat'] ?> - <?= $row['keterangan'] ?>
+                                    </option>
                                 <?php endwhile; ?>
                             </select>
                         </div>
 
+
                         <div class="form-group">
                             <label for="id_asal_surat">Asal Surat</label>
                             <select class="form-control" id="id_asal_surat" name="id_asal_surat" required>
-                                <option value="">Pilih Asal Surat</option>
+                                <option value="" disabled selected>Pilih Asal Surat</option>
                                 <?php while ($row = mysqli_fetch_assoc($asal_surat_query)): ?>
                                     <option value="<?= $row['id_asal_surat'] ?>" <?= ($id_asal_surat == $row['id_asal_surat']) ? 'selected' : '' ?>><?= $row['nama_instansi'] ?></option>
                                 <?php endwhile; ?>
@@ -221,7 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <small class="text-danger"><?= $file_error ?></small>
                             <?php endif; ?>
                         </div>
-
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
@@ -239,8 +237,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-            <!-- Bootstrap core JavaScript-->
-            <script src="../vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -272,9 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-
-    
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>    
 </body>
 </html>
 

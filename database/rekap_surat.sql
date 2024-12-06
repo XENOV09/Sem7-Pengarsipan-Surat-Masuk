@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2024 at 01:43 PM
+-- Generation Time: Dec 06, 2024 at 04:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -79,8 +79,21 @@ CREATE TABLE `kode_surat` (
 --
 
 INSERT INTO `kode_surat` (`id_kode_surat`, `kode_surat`, `keterangan`) VALUES
-(1, 'IX', 'Undangan Kepala Dinas'),
-(2, 'XI', 'Makanan');
+(1, '01', 'Surat Keputusan (SK)'),
+(2, '02', 'Surat Undangan (SU)'),
+(3, '03', 'Surat Permohonan (SPm)'),
+(4, '04', 'Surat Pemberitahuan (SPb)'),
+(5, '05', 'Surat Peminjaman (SPp)'),
+(6, '06', 'Surat Pernyataan (SPn)'),
+(7, '07', 'Surat Mandat (SM)'),
+(8, '08', 'Surat Tugas (ST)'),
+(9, '09', 'Surat Keterangan (SKet)'),
+(10, '10', 'Surat Rekomendasi (SR)'),
+(11, '11', 'Surat Balasan (SB)'),
+(12, '12', 'Surat Perintah Perjalanan Dinas (SPPD)'),
+(13, '13', 'Sertifikat (SRT)'),
+(14, '14', 'Perjanjian Kerja (PK)'),
+(15, '15', 'Surat Pengantar (SPeng)');
 
 -- --------------------------------------------------------
 
@@ -106,8 +119,7 @@ CREATE TABLE `surat_masuk` (
 --
 
 INSERT INTO `surat_masuk` (`id_surat`, `no_surat`, `tanggal_masuk`, `perihal`, `file_surat`, `id_user`, `id_divisi`, `id_kode_surat`, `id_asal_surat`, `catatan`) VALUES
-(26, '2', '0001-03-12', 'Testing 2', 'http://localhost/pengarsipan/files/675017a14e3b4.pdf', 1, 2, 1, 1, 'Test 2'),
-(27, '2', '2024-11-29', 'Test Pegawai', 'http://localhost/pengarsipan/files/6752f1175420e.pdf', 2, 1, 1, 1, 'Test Pegawai');
+(28, '1', '2002-11-09', 'Undangan Makan Bersama', 'http://localhost/pengarsipan/files/67530f4265b55.pdf', 1, 1, 2, 1, 'Bayar Sendiri');
 
 -- --------------------------------------------------------
 
@@ -189,13 +201,13 @@ ALTER TABLE `divisi`
 -- AUTO_INCREMENT for table `kode_surat`
 --
 ALTER TABLE `kode_surat`
-  MODIFY `id_kode_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_kode_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `surat_masuk`
 --
 ALTER TABLE `surat_masuk`
-  MODIFY `id_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `user`
